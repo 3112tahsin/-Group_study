@@ -27,18 +27,13 @@ def loginPage(request):
         email = request.POST.get('email').lower()
         password = request.POST.get('password')
         
-        try:
-            user = User.objects.get(email=email)
-        except:
-            messages.error(request, 'User Dose Not exist...')
-            
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=email, password=password)
         
         if user is not None:
             login(request, user)
-            return redirect(home)
+            return redirect('home')
         else:
-            messages.error(request, 'User Name or Password does not exist...')
+            messages.error(request, 'Invalid username or password')
             
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
